@@ -1,13 +1,17 @@
-class Customer{
-    #CustomerName;
-    #CustomerType;
+export class Customer{
+    #Name;
+    #Type;
     
     constructor(Name, Type){
-        this.CustomerName = Name;
-        this.CustomerType = Type;
+        this.#Name = Name;
+        this.#Type = Type;
     }
 
     GetName(){
-        return this.#CustomerName;
+        return this.#Name;
+    }
+
+    GetType(){
+        return this.#Type;
     }
 }

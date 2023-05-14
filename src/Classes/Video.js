@@ -1,4 +1,4 @@
-class Video{
+export class Video{
     #Name;
     #Category;
     #isRented = false;
