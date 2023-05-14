@@ -1,4 +1,4 @@
-class Customer{
+export class Customer{
     #Name;
     #Type;
     
@@ -7,11 +7,11 @@ class Customer{
         this.#Type = Type;
     }
 
-    get GetName(){
+    GetName(){
         return this.#Name;
     }
 
-    get GetType(){
+    GetType(){
         return this.#Type;
     }
 }
