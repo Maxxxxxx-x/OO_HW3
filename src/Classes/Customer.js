@@ -1,13 +1,17 @@
 class Customer{
-    #CustomerName;
-    #CustomerType;
+    #Name;
+    #Type;
     
     constructor(Name, Type){
-        this.CustomerName = Name;
-        this.CustomerType = Type;
+        this.#Name = Name;
+        this.#Type = Type;
     }
 
-    GetName(){
-        return this.#CustomerName;
+    get GetName(){
+        return this.#Name;
+    }
+
+    get GetType(){
+        return this.#Type;
     }
 }
