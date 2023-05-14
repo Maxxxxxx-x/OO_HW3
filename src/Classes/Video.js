@@ -26,23 +26,23 @@ export class Video{
         }
     }
 
-    GetName(){
+    get GetName(){
         return this.#Name;
     }
 
-    GetCategory(){
+    get GetCategory(){
         return this.#Category;
     }
 
-    GetRentalStat(){
+    get GetRentalStat(){
         return this.#isRented;
     }
 
-    GetPricePerDay(){
+    get GetPricePerDay(){
         return this.#pricePerDay;
     }
 
-    SwitchRentalStat(){
+    ChangeRentalStatus(){
         this.#isRented = !this.#isRented;
     }
 }

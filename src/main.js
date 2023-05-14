@@ -16,5 +16,5 @@ function initCustomers(){
 const Customers = initCustomers();
 
 Customers.forEach((Customer) => {
-    console.log(`${Customer.GetName()} | ${Customer.GetType()}`);
+    console.log(Customer.GetName());
 });
