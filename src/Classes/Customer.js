@@ -1,10 +1,12 @@
+const CustomerTypes = ["Regular", "Breezy", "Hoarders"];
+
 export class Customer{
     #Name;
     #Type;
     
-    constructor(Name, Type){
+    constructor(Name){
         this.#Name = Name;
-        this.#Type = Type;
+        this.#Type = CustomerTypes[Math.floor(Math.random() * CustomerTypes.length)];
     }
 
     GetName(){
