@@ -7,23 +7,15 @@ export class Video{
     constructor({Name, Category}){
         this.#Name = Name;
         this.#Category = Category;
-        switch(Category){
-        case "New Release":
-            this.#pricePerDay = 1;
-            break;
-        case "Drama":
-            this.#pricePerDay = 2;
-            break;
-        case "Comedy":
-            this.#pricePerDay = 3;
-            break;
-        case "Romance":
-            this.#pricePerDay = 4;
-            break;
-        case "Horror":
-            this.#pricePerDay = 5;
-            break;
-        }
+        //Changed to a hashmap since its faster than switch cases
+        const CategoryPrices = {
+            "New Release": 1,
+            "Drama": 2,
+            "Comedy": 3,
+            "Romance": 4,
+            "Horror": 5
+        };
+        this.#pricePerDay = CategoryPrices[Category];
     }
 
     GetName(){
@@ -34,7 +26,7 @@ export class Video{
         return this.#Category;
     }
 
-    GetRentalStat(){
+    GetRentalStatus(){
         return this.#isRented;
     }
 
