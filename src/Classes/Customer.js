@@ -4,7 +4,7 @@ export class Customer{
     #Name;
     #Type;
     
-    constructor(Name){
+    constructor({Name}){
         this.#Name = Name;
         this.#Type = CustomerTypes[Math.floor(Math.random() * CustomerTypes.length)];
     }

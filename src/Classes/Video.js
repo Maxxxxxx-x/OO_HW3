@@ -4,7 +4,7 @@ export class Video{
     #isRented = false;
     #pricePerDay;
 
-    constructor(Name, Category){
+    constructor({Name, Category}){
         this.#Name = Name;
         this.#Category = Category;
         switch(Category){
@@ -26,19 +26,19 @@ export class Video{
         }
     }
 
-    get GetName(){
+    GetName(){
         return this.#Name;
     }
 
-    get GetCategory(){
+    GetCategory(){
         return this.#Category;
     }
 
-    get GetRentalStat(){
+    GetRentalStat(){
         return this.#isRented;
     }
 
-    get GetPricePerDay(){
+    GetPricePerDay(){
         return this.#pricePerDay;
     }
 
