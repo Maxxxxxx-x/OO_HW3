@@ -1,11 +1,13 @@
 import { CustomerNameList, VideoNameList, StoreRules } from "./config.js";
 import { Customer } from "./Classes/Customer.js";
+import { Store } from "./Classes/Store.js";
 import { Video } from "./Classes/Video.js";
 
-function initCustomers() {
+
+function initCustomers(NStore) {
     let Customers = [];
     for (let i = 0; i < CustomerNameList.length; i++) {
-        Customers[i] = new Customer({Name: CustomerNameList[i]});
+        Customers[i] = new Customer({ Name: CustomerNameList[i], Store: NStore});
     }
     return Customers;
 }
@@ -19,22 +21,23 @@ function initVideos(){
     return MovieList;
 }
 
-function DoReturnPhase(){
-
+function DoReturnPhase(CustomerList){
+    for (let i = 0; i < CustomerList.length; i++){
+        CustomerList[i].DoReturn();
+    }
 }
 
-function DoBusiness(){
+function DoBusinessPhase(){
 
 }
 
 function StartCycle(){
-    const CustomerList = initCustomers();
     const VideoList = initVideos();
-    for (let i = 1; i <= StoreRules.Days; i++){
-        DoReturnPhase();
-        DoBusiness();
+    const NStore = new Store({VideoList: VideoList});
+    const CustomerList = initCustomers(NStore);
+    for (let Day = 1; Day <= StoreRules.Days; Day++){
+        DoReturnPhase(CustomerList);
     }
 }
-
 
 StartCycle();

@@ -1,4 +1,18 @@
-const CustomerTypes = ["Regular", "Breezy", "Hoarder"];
+const CustomerTypes = {
+    "Regular": {
+        //[ min, max ]
+        Vidoes: [1, 3],
+        Nights: [3, 5],
+    },
+    "Breezy": {
+        Videos: [2, 2],
+        Nights: [1, 2]
+    },
+    "Hoarder": {
+        Videos: [3, 3],
+        Nights: [3, 5]
+    }
+};
 
 const CustomerNameList = [
     "Alexander Thompson", 
@@ -48,10 +62,10 @@ const StoreRules = {
     "Days": 35
 };
 
-module.exports = {
-    CustomerTypes: CustomerTypes,
-    CustomerNameList: CustomerNameList,
-    VideoNameList: VideoNameList,
-    CategoryPrices: CategoryPrices,
-    StoreRules: StoreRules
+export {
+    CustomerTypes,
+    CustomerNameList,
+    VideoNameList,
+    CategoryPrices,
+    StoreRules,
 };

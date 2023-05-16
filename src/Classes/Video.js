@@ -3,8 +3,8 @@ import { CategoryPrices } from "./../config.js";
 export class Video{
     #Name;
     #Category;
-    #isRented = false;
     #pricePerDay;
+    #isRented = false;
 
     constructor({Name, Category}){
         this.#Name = Name;
