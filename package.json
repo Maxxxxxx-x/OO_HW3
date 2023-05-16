@@ -14,5 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.40.0"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.6"
   }
 }

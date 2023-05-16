@@ -44,9 +44,14 @@ const CategoryPrices = {
     "Horror": 5
 };
 
+const StoreRules = {
+    "Days": 35
+};
+
 module.exports = {
     CustomerTypes: CustomerTypes,
     CustomerNameList: CustomerNameList,
     VideoNameList: VideoNameList,
-    CategoryPrices: CategoryPrices
+    CategoryPrices: CategoryPrices,
+    StoreRules: StoreRules
 };

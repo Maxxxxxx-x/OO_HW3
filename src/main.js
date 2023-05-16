@@ -1,4 +1,4 @@
-import { CustomerNameList, VideoNameList } from "./config.js";
+import { CustomerNameList, VideoNameList, StoreRules } from "./config.js";
 import { Customer } from "./Classes/Customer.js";
 import { Video } from "./Classes/Video.js";
 
@@ -19,10 +19,22 @@ function initVideos(){
     return MovieList;
 }
 
-function StartCycle(){
+function DoReturnPhase(){
 
 }
 
-const CustomerList = initCustomers();
-const VideoList = initVideos();
+function DoBusiness(){
 
+}
+
+function StartCycle(){
+    const CustomerList = initCustomers();
+    const VideoList = initVideos();
+    for (let i = 1; i <= StoreRules.Days; i++){
+        DoReturnPhase();
+        DoBusiness();
+    }
+}
+
+
+StartCycle();
