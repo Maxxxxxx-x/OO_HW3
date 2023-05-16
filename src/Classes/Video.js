@@ -1,3 +1,5 @@
+import { CategoryPrices } from "./../config.js";
+
 export class Video{
     #Name;
     #Category;
@@ -8,13 +10,7 @@ export class Video{
         this.#Name = Name;
         this.#Category = Category;
         //Changed to a hashmap since its faster than switch cases
-        const CategoryPrices = {
-            "New Release": 1,
-            "Drama": 2,
-            "Comedy": 3,
-            "Romance": 4,
-            "Horror": 5
-        };
+        
         this.#pricePerDay = CategoryPrices[Category];
     }
 

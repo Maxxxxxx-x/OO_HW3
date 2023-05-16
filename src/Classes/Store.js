@@ -3,5 +3,4 @@ export class Store{
     constructor({VideoList: VideoList}){
         this.#Videos = VideoList;
     }
-
 }

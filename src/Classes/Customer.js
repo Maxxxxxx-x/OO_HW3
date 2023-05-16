@@ -1,4 +1,4 @@
-const CustomerTypes = ["Regular", "Breezy", "Hoarders"];
+import { CustomerTypes } from "./../config.js";
 
 export class Customer{
     #Name;
