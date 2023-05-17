@@ -16,7 +16,6 @@
     "eslint": "^8.40.0"
   },
   "dependencies": {
-    "chalk": "^5.2.0",
-    "sqlite3": "^5.1.6"
+    "chalk": "^5.2.0"
   }
 }
