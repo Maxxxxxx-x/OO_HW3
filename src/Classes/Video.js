@@ -1,36 +1,46 @@
-import { CategoryPrices } from "./../config.js";
 
-export class Video{
+class Video {
     #Name;
-    #Category;
-    #pricePerDay;
-    #isRented = false;
+    #IsRented = false;
 
-    constructor({Name, Category}){
+    constructor(Name) {
         this.#Name = Name;
-        this.#Category = Category;
-        //Changed to a hashmap since its faster than switch cases
-        
-        this.#pricePerDay = CategoryPrices[Category];
     }
 
-    GetName(){
+    GetName() {
         return this.#Name;
     }
 
-    GetCategory(){
-        return this.#Category;
+    GetRentalStatus() {
+        return this.#IsRented;
     }
 
-    GetRentalStatus(){
-        return this.#isRented;
-    }
-
-    GetPricePerDay(){
-        return this.#pricePerDay;
-    }
-
-    ChangeRentalStatus(Bool){
-        this.#isRented = Bool;
+    ChangeRentalStatus(Bool) {
+        this.#IsRented = Bool;
     }
 }
+
+function CreateVideo({ Category, Price }) {
+    return  class extends Video {
+        #PricePerDay = Price;
+        #Category = Category;
+
+        constructor({ Name }) {
+            super(Name);
+        }
+
+        GetCategory() {
+            return this.#Category;
+        }
+
+        GetPricePerDay() {
+            return this.#PricePerDay;
+        }
+
+        ChangeRentalStatus(Bool) {
+            super.ChangeRentalStatus(Bool);
+        }
+    };
+}
+
+export default CreateVideo;
