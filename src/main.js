@@ -1,4 +1,4 @@
-import { CustomerNameList, VideoNameList, StoreRules } from "./config.js";
+import { CustomerNameList, VideoNameList, SimulationSettings, TestSettings } from "./config.js";
 import { Customer } from "./Classes/Customer.js";
 import { Store } from "./Classes/Store.js";
 import { Video } from "./Classes/Video.js";
@@ -13,31 +13,62 @@ function initCustomers(NStore) {
 }
 
 function initVideos(){
-    let MovieList = [];
+    let MovieList = {};
     for (let i = 0; i < VideoNameList.length; i++){
         const [VideoCatagory, VideoName] = VideoNameList[i].split(": ");
-        MovieList[i] = (new Video({Name: VideoName, Category: VideoCatagory}));
+        MovieList[VideoName] = new Video({Name: VideoName, Category: VideoCatagory});
     }
     return MovieList;
 }
 
-function DoReturnPhase(CustomerList){
+function DoReturnPhase(CustomerList, CurrentDay){
+    if (CurrentDay === 1) return;
+    console.log("---------------------------");
+    console.log("Return Phase");
     for (let i = 0; i < CustomerList.length; i++){
-        CustomerList[i].DoReturn();
+        const Customer = CustomerList[i];
+        Customer.DoReturn(CurrentDay);
     }
 }
 
-function DoBusinessPhase(){
-
+function DoBusinessPhase(CustomerList,CurrentDay){
+    console.log("---------------------------");
+    console.log("Business Phase");
+    for (let i = 0; i < CustomerList.length; i++){
+        const Customer = CustomerList[i];
+        Customer.DoBorrow(CurrentDay);
+    }
 }
 
 function StartCycle(){
     const VideoList = initVideos();
     const NStore = new Store({VideoList: VideoList});
     const CustomerList = initCustomers(NStore);
-    for (let Day = 1; Day <= StoreRules.Days; Day++){
-        DoReturnPhase(CustomerList);
+    for (let CurrentDay = 1; CurrentDay <= SimulationSettings.Days; CurrentDay++){
+        Store.StartDay(CurrentDay);
+        DoReturnPhase(CustomerList, CurrentDay);
+        DoBusinessPhase(CustomerList, CurrentDay);
+        Store.EndDay();
     }
 }
 
-StartCycle();
+//StartCycle();
+
+function Test(){
+    const VideoList = initVideos();
+    const NStore = new Store({VideoList: VideoList});
+    const CustomerList = initCustomers(NStore);
+    console.log("================================================");
+    for (let CurrentDay = 1; CurrentDay <= TestSettings.TotalSimulatedDays; CurrentDay++){
+        console.log(`Start of day ${CurrentDay}`);
+        NStore.StartDay(CurrentDay);
+        DoReturnPhase(CustomerList, CurrentDay);
+        DoBusinessPhase(CustomerList, 1);
+        NStore.EndDay();
+        console.log(`End of day ${CurrentDay}`);
+        console.log("================================================");
+    }
+    NStore.EndSimulation();
+}
+
+Test();

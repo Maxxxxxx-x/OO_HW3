@@ -1,18 +1,19 @@
 const CustomerTypes = {
     "Regular": {
         //[ min, max ]
-        Vidoes: [1, 3],
+        Videos: [1, 3],
         Nights: [3, 5],
     },
     "Breezy": {
-        Videos: [2, 2],
+        Videos: [1, 2],
         Nights: [1, 2]
     },
     "Hoarder": {
         Videos: [3, 3],
-        Nights: [3, 5]
+        Nights: [7, 7]
     }
 };
+
 
 const CustomerNameList = [
     "Alexander Thompson", 
@@ -58,8 +59,12 @@ const CategoryPrices = {
     "Horror": 5
 };
 
-const StoreRules = {
-    "Days": 35
+const SimulationSettings = {
+    "TotalSimulatedDays": 35
+};
+
+const TestSettings = {
+    "TotalSimulatedDays": 35
 };
 
 export {
@@ -67,5 +72,6 @@ export {
     CustomerNameList,
     VideoNameList,
     CategoryPrices,
-    StoreRules,
+    SimulationSettings,
+    TestSettings,
 };
