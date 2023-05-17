@@ -16,15 +16,15 @@ const CustomerTypes = {
 
 
 const CustomerNameList = [
-    "Alexander Thompson", 
-    "Victoria Anderson", 
-    "Benjamin Mitchell", 
-    "Olivia Harris", 
-    "Christopher Turner", 
-    "Sophia Wilson", 
-    "Daniel Walker", 
-    "Emily Roberts", 
-    "William Davis", 
+    "Alexander Thompson",
+    "Victoria Anderson",
+    "Benjamin Mitchell",
+    "Olivia Harris",
+    "Christopher Turner",
+    "Sophia Wilson",
+    "Daniel Walker",
+    "Emily Roberts",
+    "William Davis",
     "Charlotte Evans"
 ];
 

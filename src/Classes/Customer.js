@@ -1,70 +1,104 @@
 import { CustomerTypes } from "./../config.js";
-import { Random } from "./../Modules/Util.js";
+import Random from "../Util/Random.js";
 
-export class Customer{
+class BaseCustomer {
     #Name;
-    #Type;
     #Store;
-    #Rented = [];
-    #ReturnDate = 0;
+    #Rental = [];
 
-    constructor({Name, Store}){
+    constructor(Name, Store) {
         this.#Name = Name;
         this.#Store = Store;
-        const Types = Object.keys(CustomerTypes);
-        this.#Type = Types[Random(0, Types.length)];
     }
 
-    GetName(){
+    GetName() {
         return this.#Name;
     }
 
-    GetType(){
-        return this.#Type;
+    GetRentedVideos() {
+        return this.#Rental.flatMap((e) => e.VideoList);
     }
 
-    #GenerateVideoWishlist(){
-        let AvailableVideos = this.#Store.GetAvailableVideos();
-        let AvailableCount = AvailableVideos.length;
-        if (AvailableCount< 1) return [false, false];
-        const { Videos, Nights } = CustomerTypes[this.#Type];
-        let [ MinVid, MaxVid ] = Videos;
-        const [ MinNights, MaxNights ] = Nights;
-        const NumToRent = Random(MinVid, MaxVid);
-        const NumOfNights = Random(MinNights, MaxNights);
-        if (this.#Type === "Hoarder" && AvailableCount < MinVid) return [false, false];
-        MaxVid = AvailableCount >= MaxVid ? MaxVid : AvailableCount;
-        let VideosToRent = [];
-        for (let i = 0; i < NumToRent; i++){
-            const VideoIndex = Math.floor(Math.random() * AvailableVideos.length);
-            const TargetVideo = AvailableVideos[VideoIndex];
-            if (TargetVideo){
-                VideosToRent[i] = TargetVideo ;
-            }
-            AvailableVideos.splice(VideoIndex, 1);
+    #GetAvailableVideos() {
+        return this.#Store.GetAvailableVideos();
+    }
+
+    GenerateWishList(VideoNumLUT, RentalDaysLUT) {
+        let AvailableVideos = this.#GetAvailableVideos();
+        const AvailableCount = AvailableVideos.length;
+        if (AvailableCount < 1) return false;
+        let [VMin, VMax] = VideoNumLUT;
+        const [NMin, NMax] = RentalDaysLUT;
+        let NumToRent = Random(VMin, VMax);
+        const Duration = Random(NMin, NMax);
+        let VidoesToRent = [];
+        for (let i = 0; i < NumToRent; i++) {
+            const VideoIndx = Random(0, AvailableVideos.length);
+            const Target = AvailableVideos[VideoIndx];
+            if (!Target) continue;
+            VidoesToRent[i] = Target;
+            AvailableVideos.splice(VideoIndx, 1);
         }
-        console.log(VideosToRent);
-        return [VideosToRent, NumOfNights];
+        return [VidoesToRent, Duration];
     }
 
-    DoBorrow(CurrentDay){
-        if (this.#Rented.length > 0) return;
-        //replace random here
-        if (Math.floor(Math.random() * 2)) return;
-        const [ VideosToRent, NumOfNights ] = this.#GenerateVideoWishlist();
-        if (!(VideosToRent && NumOfNights)) return;
-        const ReturnDate = CurrentDay + NumOfNights;
-        this.#ReturnDate = ReturnDate;
-        this.#Rented = VideosToRent;
-        this.#Store.Rent({ Name: this.#Name, Type: this.#Type }, VideosToRent, NumOfNights);
+    #AddRentalRecord(Id, VideoList, ReturnDate) {
+        this.#Rental.push({
+            id: Id,
+            ReturnDate: ReturnDate,
+            VideoList: VideoList
+        });
     }
 
-    DoReturn(CurrentDay){
-        const VideoList = this.#Rented;
+    #RemoveRentalRecord(ReturnDate) {
+        this.#Rental = this.#Rental.filter((Record) => Record.ReturnDate !== ReturnDate);
+    }
+
+    Rent(Wishlist, CurrentDay, Duration) {
+        const TransactionId = this.#Store.Rent(this.#Name, Wishlist, Duration);
+        this.#AddRentalRecord(TransactionId, Wishlist, CurrentDay + Duration);
+    }
+
+    Return(CurrentDay) {
+        const VideoList = this.#Rental;
         if (VideoList.length < 1) return;
-        if (this.#ReturnDate != CurrentDay) return;
-        this.#Store.Return({ Name: this.#Name, Type: this.#Type }, VideoList);
-        this.#ReturnDate = 0;
-        this.#Rented = [];
+        const Records = this.#Rental
+            .filter((e) => e.ReturnDate === CurrentDay)
+            .map((e) => ({ id: e.id, VideoList: e.VideoList }));
+        if (Records.length < 1) return;
+        this.#Store.Return(this.#Name, Records);
+        this.#RemoveRentalRecord(CurrentDay);
     }
 }
+
+function CreateCustomer({ Type }) {
+    return class extends BaseCustomer {
+        #Type = Type;
+        #VideoNumLUT;
+        #RentalDaysLUT;
+
+        constructor({ Name, Store }) {
+            super(Name, Store);
+            const { Videos, Nights } = CustomerTypes[this.#Type];
+            this.#VideoNumLUT = Videos;
+            this.#RentalDaysLUT = Nights;
+        }
+
+        Rent(CurrentDay) {
+            const HasRented = super.GetRentedVideos().length;
+            if (HasRented >= 3) return;
+            if (Math.floor(Math.random() * 2)) return;
+            const Returned = super.GenerateWishList(this.#VideoNumLUT, this.#RentalDaysLUT);
+            if (Returned === false) return;
+            const [ Wishlist, Duration ] = Returned;
+            if (Wishlist.length < 3 && this.#Type == "Hoarder") return;
+            super.Rent(Wishlist, CurrentDay, Duration);
+        }
+
+        Return(CurrentDay) {
+            super.Return(CurrentDay);
+        }
+    };
+}
+
+export default CreateCustomer;
