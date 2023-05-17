@@ -5,8 +5,8 @@ export class Customer{
     #Name;
     #Type;
     #Store;
-    #Rented;
-    #ReturnDate;
+    #Rented = [];
+    #ReturnDate = 0;
 
     constructor({Name, Store}){
         this.#Name = Name;
@@ -26,46 +26,45 @@ export class Customer{
     #GenerateVideoWishlist(){
         let AvailableVideos = this.#Store.GetAvailableVideos();
         let AvailableCount = AvailableVideos.length;
-        if (AvailableCount< 1){
-            console.log(`Name: ${ this.#Name } | Type: ${this.#Type} | No Videos`);
-            return [false, false];
-        }
+        if (AvailableCount< 1) return [false, false];
         const { Videos, Nights } = CustomerTypes[this.#Type];
         let [ MinVid, MaxVid ] = Videos;
         const [ MinNights, MaxNights ] = Nights;
         const NumToRent = Random(MinVid, MaxVid);
         const NumOfNights = Random(MinNights, MaxNights);
-        console.log(this.#Type);
-        if (this.#Type === "Hoarder" && AvailableCount < MinVid){
-            console.log(`Name: ${ this.#Name } | Type: ${this.#Type} | Not enough videos`);
-            return [false, false];
-        }
-        
+        if (this.#Type === "Hoarder" && AvailableCount < MinVid) return [false, false];
         MaxVid = AvailableCount >= MaxVid ? MaxVid : AvailableCount;
         let VideosToRent = [];
         for (let i = 0; i < NumToRent; i++){
             const VideoIndex = Math.floor(Math.random() * AvailableVideos.length);
             const TargetVideo = AvailableVideos[VideoIndex];
-            VideosToRent[i] = TargetVideo;
+            if (TargetVideo){
+                VideosToRent[i] = TargetVideo ;
+            }
             AvailableVideos.splice(VideoIndex, 1);
         }
+        console.log(VideosToRent);
         return [VideosToRent, NumOfNights];
     }
 
     DoBorrow(CurrentDay){
-        if (this.#Rented) return;
+        if (this.#Rented.length > 0) return;
+        //replace random here
+        if (Math.floor(Math.random() * 2)) return;
         const [ VideosToRent, NumOfNights ] = this.#GenerateVideoWishlist();
         if (!(VideosToRent && NumOfNights)) return;
-        this.#ReturnDate = CurrentDay + NumOfNights;
+        const ReturnDate = CurrentDay + NumOfNights;
+        this.#ReturnDate = ReturnDate;
         this.#Rented = VideosToRent;
         this.#Store.Rent({ Name: this.#Name, Type: this.#Type }, VideosToRent, NumOfNights);
     }
 
     DoReturn(CurrentDay){
-        if (!this.#Rented) return;
-        if (this.#ReturnDate !== CurrentDay) return;
-        this.#Store.Return({ Name: this.#Name, Type: this.#Type }, this.#Rented);
-        this.#Rented = null;
-        this.#ReturnDate = null;
+        const VideoList = this.#Rented;
+        if (VideoList.length < 1) return;
+        if (this.#ReturnDate != CurrentDay) return;
+        this.#Store.Return({ Name: this.#Name, Type: this.#Type }, VideoList);
+        this.#ReturnDate = 0;
+        this.#Rented = [];
     }
 }

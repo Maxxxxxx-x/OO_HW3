@@ -52,7 +52,7 @@ const VideoNameList = [
 ];
 
 const CategoryPrices = {
-    "New Release": 1,
+    "New Release": 20,
     "Drama": 2,
     "Comedy": 3,
     "Romance": 4,
@@ -63,9 +63,6 @@ const SimulationSettings = {
     "TotalSimulatedDays": 35
 };
 
-const TestSettings = {
-    "TotalSimulatedDays": 35
-};
 
 export {
     CustomerTypes,
@@ -73,5 +70,4 @@ export {
     VideoNameList,
     CategoryPrices,
     SimulationSettings,
-    TestSettings,
 };

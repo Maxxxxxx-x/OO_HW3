@@ -30,7 +30,7 @@ export class Video{
         return this.#pricePerDay;
     }
 
-    ChangeRentalStatus(){
-        this.#isRented = !this.#isRented;
+    ChangeRentalStatus(Bool){
+        this.#isRented = Bool;
     }
 }

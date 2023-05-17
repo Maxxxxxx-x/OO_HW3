@@ -1,8 +1,8 @@
-import { CustomerNameList, VideoNameList, SimulationSettings, TestSettings } from "./config.js";
+import { CustomerNameList, VideoNameList, SimulationSettings } from "./config.js";
 import { Customer } from "./Classes/Customer.js";
 import { Store } from "./Classes/Store.js";
 import { Video } from "./Classes/Video.js";
-
+import chalk from "chalk";
 
 function initCustomers(NStore) {
     let Customers = [];
@@ -34,41 +34,30 @@ function DoReturnPhase(CustomerList, CurrentDay){
 function DoBusinessPhase(CustomerList,CurrentDay){
     console.log("---------------------------");
     console.log("Business Phase");
+    //change random to DoBorrow
     for (let i = 0; i < CustomerList.length; i++){
         const Customer = CustomerList[i];
         Customer.DoBorrow(CurrentDay);
     }
 }
 
-function StartCycle(){
+
+function Simulate(){
     const VideoList = initVideos();
     const NStore = new Store({VideoList: VideoList});
     const CustomerList = initCustomers(NStore);
-    for (let CurrentDay = 1; CurrentDay <= SimulationSettings.Days; CurrentDay++){
-        Store.StartDay(CurrentDay);
-        DoReturnPhase(CustomerList, CurrentDay);
-        DoBusinessPhase(CustomerList, CurrentDay);
-        Store.EndDay();
-    }
-}
-
-//StartCycle();
-
-function Test(){
-    const VideoList = initVideos();
-    const NStore = new Store({VideoList: VideoList});
-    const CustomerList = initCustomers(NStore);
+    console.log(chalk.blue.bold(`Starting simulation for ${SimulationSettings.TotalSimulatedDays} days`));
     console.log("================================================");
-    for (let CurrentDay = 1; CurrentDay <= TestSettings.TotalSimulatedDays; CurrentDay++){
+    for (let CurrentDay = 1; CurrentDay <= SimulationSettings.TotalSimulatedDays; CurrentDay++){
         console.log(`Start of day ${CurrentDay}`);
         NStore.StartDay(CurrentDay);
         DoReturnPhase(CustomerList, CurrentDay);
-        DoBusinessPhase(CustomerList, 1);
-        NStore.EndDay();
+        DoBusinessPhase(CustomerList, CurrentDay);
         console.log(`End of day ${CurrentDay}`);
         console.log("================================================");
     }
-    NStore.EndSimulation();
+    console.log(chalk.blue.bold("Simulation ended"));
+    NStore.ProduceReport();
 }
 
-Test();
+Simulate();

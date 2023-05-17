@@ -38,10 +38,13 @@ export class Logs{
         if (!this.#Log[Category]) return false;
         this.#Log[Category].push({id: id, ...Data});
     }
-
-    Remove(Category, id){
+    Find({Category, id}){
+        const Data = this.#Log[Category];
+        return Data.find(e => e.id === id);
+    }
+    Remove({Category, id}){
         if (!this.#Log[Category]) return false;
-        const Exists = this.#Log[Category].findIndex(e => e.id === id)
+        const Exists = this.#Log[Category].findIndex(e => e.id === id);
         if (Exists !== -1) this.#Log[Category].splice(Exists, 1);
     }
 }
