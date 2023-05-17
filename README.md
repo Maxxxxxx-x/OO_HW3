@@ -22,11 +22,12 @@ There are a total of 4 classes which can be found in [this folder](./src/Classes
 - [Video](./src/Classes/Video.js) - The class for the videos
 
 
-Both ``Customer`` and ``Video`` uses a class factory method to create classes for each one of their types / categories. Both have basically the same design which consists of a `base` class and an extended class.
+Both ``Customer`` and ``Video`` uses a class factory method to create classes for each one of their types / categories. Both have similar designs where they both consists of a ***base class*** and a ***class factory***.
 
-We also have a [Utility script](./src/Util/Random.js) which provides us with the ``Random()`` function.
+We also have 2 [utility scripts](./src/Util) which provides us with the ``Random()`` and ``randomUUID`` function. (UUID is a buildint function from `node:crypto`)
 
-The UML 
+![image](./images/UML.png)
+The UML class diagram can be found [here](./images/UML.png)
 
 <br/>
 

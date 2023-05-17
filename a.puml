@@ -1,0 +1,126 @@
+@startuml
+
+class BaseVideo {
+    - Name : String
+    - IsRented : Bool
+
+    + GetName() : String
+    + GetRentalStatus() : Bool
+    + ChangeRentalStatus() : void
+}
+
+class Video extends BaseVideo
+
+class Horror extends Video {
+    - PricePerDay : Int
+    - Category : String
+
+    + GetCategory() : String
+    + GetPricePerDay() : Int
+    + ChangeRentalStatus() : void
+}
+
+class Romance extends Video {
+    - PricePerDay : Int
+    - Category : String
+
+    + GetCategory() : String
+    + GetPricePerDay() : Int
+    + ChangeRentalStatus() : void
+}
+
+class Drama extends Video {
+    - PricePerDay : Int
+    - Category : String
+
+    + GetCategory() : String
+    + GetPricePerDay() : Int
+    + ChangeRentalStatus() : void
+}
+
+class Comedy extends Video {
+    - PricePerDay : Int
+    - Category : String
+
+    + GetCategory() : String
+    + GetPricePerDay() : Int
+    + ChangeRentalStatus() : void
+}
+
+class NewRelease extends Video {
+    - PricePerDay : Int
+    - Category : String
+
+    + GetCategory() : String
+    + GetPricePerDay() : Int
+    + ChangeRentalStatus() : void
+}
+
+class BaseCustomer {
+    - Name : String
+    - Rental : Array
+    - Status : Bool
+
+    + GetName() : String
+    + GetRentedVid() : Array
+    + GenerateWish() : Array
+    + Rent() : void
+    + Return() : void
+}
+
+class Regular {
+    - Type : String
+
+    + Rent() : void
+    + Return() : void
+}
+
+class Breezy {
+    - Type : String
+
+    + Rent() : void
+    + Return() : void
+}
+
+class Hoarder {
+    - Type : String
+
+    + Rent() : void
+    + Return() : void
+}
+
+class Customer extends BaseCustomer
+
+Customer <|-- Regular
+Customer <|-- Breezy
+Customer <|-- Hoarder
+
+class Store {
+    - Logs : Logs
+    - Videos : Array
+    - CurrentDay : Int
+
+    + GetAvailableVideos() : Array
+    + Rent() : void
+    + Return() : void
+    + StartDay() : void
+    + ProduceReport() : void
+}
+
+class Logs {
+    - Log : Array
+    - Name : String
+
+    + GetName() : String
+    + GetLogs() : Array
+    + GetCount() : Int
+    + Create() : void
+    + Add() : void
+    + Find() : void
+    + Remove() : void
+}
+
+Store -* Logs
+Store -* Video
+
+@enduml

@@ -1,5 +1,5 @@
 
-class Video {
+class BaseVideo {
     #Name;
     #IsRented = false;
 
@@ -21,7 +21,7 @@ class Video {
 }
 
 function CreateVideo({ Category, Price }) {
-    return  class extends Video {
+    return class extends BaseVideo {
         #PricePerDay = Price;
         #Category = Category;
 
